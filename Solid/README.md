@@ -124,7 +124,6 @@ De esta forma se puede ver como se segmenta una clase que tenia muchas tareas en
 - **Código más limpio y organizado**: El sistema está estructurado por responsabilidades, de modo que se tiene una cohesión y un orden apropiado.
 
 
-
 ### Open Closed principle (**O**CP)
 
 En términos generales, se define que el principio de la responsabilidad única indica que
@@ -155,10 +154,221 @@ Ahora bien, una nota importante acerca de un atributo que comparte cada una de l
 
 Notese también que el principio OCP es también una puerta de acceso al desarrollo del polimorfismo, uno de los pilares fundamentales de la programación orientada a objetos.
 
-Para continuar, se debe analizar 
+Para continuar, se debe analizar las implementaciones apropiadas y otras no tan apropiadas del OCP. 
+Principalmente se debe definir la [interfaz](./OCP/CorrectImplementation/Executable.java) que tiene los métodos que deben ser implementados
+
+```java
+public interface Executable {
+    void open();
+    void close();
+    boolean getOpenned();
+}
+```
+Para continuar se definen cada una de las clases que implementan la interfaz. 
+[Implementación para la clase Door](./OCP/CorrectImplementation/Door.java)
+```java
+public class Door implements Executable {
+
+    private boolean isOpened;
+
+    public Door(boolean opened){
+        this.isOpened = opened;
+    }
+
+    @Override
+    public void open() {
+        // ...
+    }
+
+    @Override
+    public void close() {
+        // ...
+    }
+
+    @Override
+    public boolean getOpenned(){return isOpened;}
+}
+```
+[Implementación para la clase Drawer](./OCP/CorrectImplementation/Drawer.java)
+```java
+public class Drawer implements Executable{
+    private boolean isOpened;
+
+    public Drawer(boolean opened){
+        this.isOpened = opened;
+    }
+
+    @Override
+    public void open(){
+        // ...
+    }
+
+    @Override
+    public void close(){
+        // ...
+    }
+
+    @Override
+    public boolean getOpenned(){return isOpened;}
+}
+
+```
+[Implementación para la clase Refrigerator](./OCP/CorrectImplementation/Refrigerator.java)
+```java
+public class Refrigerator implements Executable {
+
+    private boolean isOpened;
+
+    public Refrigerator(boolean opened){
+        this.isOpened = opened;
+    }
+
+    @Override
+    public void open() {
+        // ...
+    }
+
+    @Override
+    public void close() {
+        // ...
+    }
+
+    @Override
+    public boolean getOpenned() {return isOpened;}
+}
+```
+Notese que todos los métodos tienen el decorador @Override, lo que indica que el método se está sobreescribiendo.
+Ahora bien, veamos la implementación de la clase Hand y el cambio que está tiene cuando no se usa una interfaz. 
+[*Clase hand cuando hay una interfaz*](./OCP/CorrectImplementation/Hand.java)
+```java
+public class Hand {
+
+    public void doAction(Executable executable) {
+
+        if (!executable.getOpenned()) {
+            executable.open();
+        } else {
+            executable.close();
+        }
+    }
+}
+```
+[*Clase hand cuando no hay una interfaz*](./OCP/WrongImplementation/Hand.java)
+```java
+public class Hand {
+
+    public void doAction(Door door) {
+        if (!door.getOpenned()) {
+            door.open();
+        } else {
+            door.close();
+        }
+    }
+
+    public void doAction(Drawer drawer) {
+        if (!drawer.getOpenned()) {
+            drawer.open();
+        } else {
+            drawer.close();
+        }
+    }
+
+    public void doAction(Refrigerator refrigerator) {
+        if (!refrigerator.getOpenned()) {
+            refrigerator.open();
+        } else {
+            refrigerator.close();
+        }
+    }
+}
+```
+
+El anterior cambio se debe a que no hay un "contrato" o estándar de cómo se van a desarrollar el llamado de los métodos. Notese que como argumento la primera definición de la clase recibe una instancia de executable(la interfaz). Mientras que para el segundo bloque se recibe una implementación de la interfaz (Que para este caso es una abstracción, pues la interfaz no existe). 
+
+La principal diferencia entre estos bloques es que para el segundo no hay un estándar predefinido que permita de forma fácil acceder a los métods que estas tres clases (Door, Drawer, Refrigerator) deben tener.
 
 
 ### Liskov substitution principle (**L**SP)
+
+|  Barbara Liskov o Barbara Jane Liskov, es una prominente científica de la computación estadounidense.Sus mayores contribuciones incluyen el Principio de Sustitución de Liskov (LSP), la creación del lenguaje CLU (abstracción de datos) y el desarrollo del lenguaje distribuido Argus. | ![liskov](./media/BLiskov.png) |
+| ---------------------------------------------------------------------------------------------------- | -------- |
+
+En términos generales, se define que el principio de la responsabilidad única indica que
+
+> Objects of a superclass should be replaceable with objects of its subclasses without breaking the application or altering expected behavior.
+
+o en español, 
+> Objetos de una superclase deben poder ser reemplazados por objetos sus subclases sin romper la aplicación o alterar el comportamiento esperado.
+
+En principio, el principio de sustitución de Liskov puede ser un poco confuso, es por ello que se va a desglosar de manera sencilla a continuación. Para esto, se van a plantear dos ejemplos, el primero de forma conceptual y didáctica y el segundo a modo de aplicación más elaborada.
+
+Para el primer ejemplo veamos el siguiente diagrama de clases UML.
+![UML Liskov incorrecto](./media/WrongLiskov.png)
+Como se puede ver, existe una super clase llamada Pajaro con el método de clase público volar y hay una clase pinguino que herada de Pajaro, es decir, todos los métodos de Pajaro quedan en Penguin y a su vez un atributo privado que indica la edad del ave.
+Veamos, el siguiente bloque de código: 
+```java
+public void makeBirdFly(Bird bird){
+    bird.fly();
+}
+makeBirdFly(new Penguin());
+```
+En este caso, se espera un pájaro que tenga la capacidad de volar. No obstante, el pingüino no tiene la capacidad de volar. Lo cual, indica una error del sistema.
+Ahora bien, desde la definición técnica del LSP, se indica que la subclase debe estar en la capacidad de reemplazar la clase padre. En este caso, es evidente que debido al método Volar(), es imposible que una instancia de la clase Penguin esté en la capacidad de sustituir a su padre Pajaro.
+
+Ahora bien, veamos la implementación apropiada del principio de sustitución de liskov desarrollandoi la corrección de lo presentado previamente.
+![UML Liskov incorrecto](./media/GoodLiskov.png)
+Notese que hay una interfaz Pajaro y una interfaz PajaroVolador. La segunda implementa la primera. No obstante, esto no es de relevancia importante para el análisi. Notese que Penguin implementa Pajaro, lo cual es apropiado pues no existe el método volar. Por otro lado, Toucan, implementa PajaroVolador, lo cual es apropiado pues se puede hacer uso del método volar.
+
+Para el segundo ejemplo. 
+
+Se define una clase [rectángulo](./LSP/WrongImplementation/Rectangle.java) la cuál es bastante sencilla con dos setters y un getter que devuelve el valor del área.
+
+```java
+class Rectangle {
+
+    protected int width;
+    protected int height;
+
+    public void setWidth(int width) {this.width = width;}
+
+    public void setHeight(int height) {this.height = height;}
+
+    public int getArea() {return width * height;}
+}
+```
+A su vez se declara una clase Square que hereda de Rectangle, algo que es notoriamente erroneo. No obstante, por el ejemplo se desarrollará el proceso de herencia.
+
+```java
+class Square extends Rectangle {
+    @Override
+    public void setWidth(int width) {
+        this.width = width;
+        this.height = width; // fuerza lados iguales
+    }
+
+    @Override
+    public void setHeight(int height) {
+        this.height = height;
+        this.width = height; // fuerza lados iguales
+    }
+}
+```
+
+La principal incidencia que se ve acá es el mal uso de los setters al intentar forzar que el rectangle tenga unas medidas igual en su base y su alto. Lo cual puede terminar en que la figura original sufra deformaciones. Ahora bien, la forma correcta de desarrollarla es la siguiente.
+
+Definición de [una interfaz sencilla shape](./LSP/CorrectImplementation/Shape.java)
+```java
+interface Shape {
+    int getArea();
+}
+```
+
+Una clase [rectángulo](./LSP/CorrectImplementation/Rectangle.java) la cual implementa esta interfaz de modo que el constructor recibe los parámetros de base y altura, guardandolos como atributos privados y el método getArea() devuelve el área del rectángulo.
+
+Finalmente, para el [cuádrado](./LSP/CorrectImplementation/Square.java) se tiene un constructor que solo recibe la longitud de una de estas aristas y el método getArea() que se debe implementar de forma obligatoriua por lo definido en la interfaz y que eleva al cuadrado este atributo privado.
+
+De esta forma se tiene un principio de sustitución de liskov apropiado y un código con alta coherencia.
+
 ### Interface Segregation principle (**I**SP)
 ### Dependency inversion principle (**D**IP)
 
