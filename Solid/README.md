@@ -8,10 +8,6 @@
 ## Fecha de entrega
 `2026-02-25`
 
-### Historia y beneficios de los principios SOLID.
-
-
-
 ### Single responsability principle (**S**RP)
 
 En términos generales, se define que el principio de la responsabilidad única indica que
@@ -126,7 +122,7 @@ De esta forma se puede ver como se segmenta una clase que tenia muchas tareas en
 
 ### Open Closed principle (**O**CP)
 
-En términos generales, se define que el principio de la responsabilidad única indica que
+En términos generales, se define que el principio de abierto abierto-cerrado indica que
 
 > A module should be opened for extension but closed for modification
 
@@ -293,7 +289,7 @@ La principal diferencia entre estos bloques es que para el segundo no hay un est
 |  Barbara Liskov o Barbara Jane Liskov, es una prominente científica de la computación estadounidense.Sus mayores contribuciones incluyen el Principio de Sustitución de Liskov (LSP), la creación del lenguaje CLU (abstracción de datos) y el desarrollo del lenguaje distribuido Argus. | ![liskov](./media/BLiskov.png) |
 | ---------------------------------------------------------------------------------------------------- | -------- |
 
-En términos generales, se define que el principio de la responsabilidad única indica que
+En términos generales, se define que el principio de sustitució de liskov indica que
 
 > Objects of a superclass should be replaceable with objects of its subclasses without breaking the application or altering expected behavior.
 
@@ -370,6 +366,64 @@ Finalmente, para el [cuádrado](./LSP/CorrectImplementation/Square.java) se tien
 De esta forma se tiene un principio de sustitución de liskov apropiado y un código con alta coherencia.
 
 ### Interface Segregation principle (**I**SP)
+
+En términos generales, se define que el principio de segregación de interfaces indica que
+
+> Clients should not be forced to depend on methods they do not use.
+
+o en español, 
+
+> Los clientes no deben ser forzados a depender en métodos que no usan
+
+Esto indica que no se deben crear interfaces que sean muy grandes o robustas con todos los métodos dentro de ellas. En cambio, se deben crear varias interfaces que permitan tener los difrentes métodos condensados en ellas sin tener un solo monolito de interfaz. 
+
+Para el ejemplo del código, comencemos con la creación de una [interfaz trabajador](./ISP/WrongImplementation/Worker.java)
+```java
+public interface Worker {
+    public void work();
+    public void eat();
+}
+```
+Se van a crear dos tipos de trabajadores a partir de la interfaz trabajador (Worker), las cuales serán: 
+- Trabajador humano
+- Trabajador robot
+
+[Clase trabajador humano](./ISP/WrongImplementation/HumanWorker.java)
+```java
+public class HumanWorker implements Worker {
+    @Override
+    public void work(){}
+    
+    @Override
+    public void eat(){}
+}
+```
+[Clase trabajador robot](./ISP/WrongImplementation/HumanWorker.java)
+```java
+public class RobotWorker implements Worker {
+    @Override
+    public void work(){}
+    
+    @Override
+    public void eat(){}
+}
+```
+En la segunda clase, en donde se define el trabajador robot, se encuentra un importante error puesto que el robot no debe estar en la capacidad de comer.
+
+La solución de esto es muy sencilla, por lo cual no se codifica solo se explica. Para arreglar este desperfecto de abstracción, se deben crear dos interfaces 
+```java
+public interface Workable(){
+    public void work();
+}
+```
+```java
+public interface Eatable(){
+    public void eat();
+}
+```
+De esta forma cada uno de los tipos de trabajadores implementa los métodos necesarios para su funcionamiento adecuado.
+HumanWorker, implementa tanto eatable como Workable. Mientras que, RobotWorker implementa solo Workable.
+
 ### Dependency inversion principle (**D**IP)
 
 ### Referencias
