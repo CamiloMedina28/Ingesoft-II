@@ -426,6 +426,77 @@ HumanWorker, implementa tanto eatable como Workable. Mientras que, RobotWorker i
 
 ### Dependency inversion principle (**D**IP)
 
+En forma general, 
+> Los módulos de alto nivel no deben depender de módulos de bajo nivel; ambos deben depender de abstracciones.
+Las abstracciones no deben depender de los detalles; los detalles deben depender de las abstracciones.
+
+De forma general, las características generales del DIP son 
+
+- La lógica de negocio no conoce detalles técnicos específicos.
+- Las implementaciones concretas (por ejemplo, MySQL, envío de email, APIs externas) se conectan mediante interfaces.
+- Si cambia una tecnología, no es necesario modificar la lógica principal del sistema.
+
+Principalmente, la tercera premisa da lugar al proceso de inyección de dependencias.
+En la inyección de dependencias, los modulos que necesite la clase para su funcionamiento, no son creados de forma interna. En cambio, se pasan a la función como argumento, es decir, son instanciados en otro lugar y se inyectan a la clase por medio del constructor u otro método relevante.
+
+```java
+class Television {
+
+    public void turnOn() {
+        System.out.println("Television ON");
+    }
+}
+
+class RemoteControl {
+
+    private Television tv = new Television();
+
+    public void pressButton() {
+        tv.turnOn();
+    }
+}
+```
+En el segmento anterior se identifica que la clase de control remoto depende estrictamente de la clase Televisión, pues dentro de ella se instancia un objeto de tipo Televisor.
+Esto genera problemas, porque, si de forma general se pretende tener un control remoto para otro dispositivo que no sea un televisor, sino por ejemplo, un radio o dispositivo de reproducción de sonido, la clase deberia ser modificada desde su contenido interno.
+Es por ello que, para cumplir el DIP se pueden aplicar los siguientes cambios
+```java
+interface Device {
+    void turnOn();
+}
+```
+```java
+class Television implements Device {
+
+    public void turnOn() {
+        System.out.println("Television ON");
+    }
+}
+```
+```java
+class Radio implements Device {
+
+    public void turnOn() {
+        System.out.println("Radio ON");
+    }
+}
+```
+Ahora, la implementación de control remoto queda de la siguiente forma:
+```java
+class RemoteControl {
+
+    private Device device;
+
+    public RemoteControl(Device device) { // inyección por constructor
+        this.device = device;
+    }
+
+    public void pressButton() {
+        device.turnOn();
+    }
+}
+```
+Como se logra ver, se permite un uso general del control remoto y para implementar otro dispositivo no se deben modificar las clases originales ya descritas.
+
 ### Referencias
 - https://corecppil.github.io/Meetups/2020-05-26_CoreCpp_Worldwide!/The_SOLID_Principles.pdf
 - https://ivanderevianko.com/wp-content/uploads/2013/10/Agile-Principles-Patterns-and-Practices-in-C.pdf : Chapter 8 - Chapter 12
