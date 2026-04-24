@@ -1,0 +1,265 @@
+En la carpeta de laboratorio se encuentra la actividad realizada en clase, con esta actividad, la idea es replicarlo en alguna de estas siguientes APIS, ustedes escogen, pueden combinar el API según el alcance ( usar una para el crud básico y otra para JWT por ejemplo) :
+
+
+APIs Públicas y Gratuitas
+
+ Entretenimiento / Cultura Pop
+1. PokéAPI — Pokémon
+https://pokeapi.co/api/v2/pokemon
+
+GET /pokemon → lista todos
+GET /pokemon/pikachu → info de uno
+GET /pokemon/25 → por número
+GET /ability/overgrow → habilidades
+Sin registro, sin token
+
+
+2. The Simpsons Quotes — Frases
+https://thesimpsonsquoteapi.glitch.me/quotes
+
+GET /quotes → frase aleatoria
+GET /quotes?count=5 → 5 frases
+Sin registro, sin token
+Responde con personaje, imagen y frase
+
+
+3. Rick and Morty
+https://rickandmortyapi.com/api
+
+GET /character → todos los personajes
+GET /character/1 → Rick Sanchez
+GET /episode → todos los episodios
+GET /location → todas las ubicaciones
+Sin registro, sin token
+
+
+4. Studio Ghibli
+https://ghibliapi.vercel.app/films
+
+GET /films → todas las películas
+GET /films/:id → película específica
+GET /people → personajes
+GET /species → especies
+Sin registro, sin token
+
+
+5. Breaking Bad Quotes
+https://api.breakingbadquotes.xyz/v1/quotes
+
+GET /quotes → frase aleatoria
+GET /quotes/5 → 5 frases
+Sin registro, sin token
+
+
+6. The Lord of the Rings
+https://the-one-api.dev/v2
+
+GET /movie → todas las películas
+GET /quote → frases aleatorias
+GET /character → personajes
+Requiere registro gratuito para token
+Practicar Authorization Bearer
+
+
+ Ciencia y Espacio
+7. NASA — Astronomy Picture of the Day
+https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY
+
+GET /apod → foto astronómica del día
+GET /apod?date=2024-01-01 → foto de fecha específica
+Usar DEMO_KEY como API Key (limitado) o registrarse gratis
+Practicar query params y API Key
+
+
+8. SpaceX
+https://api.spacexdata.com/v4
+
+GET /launches → todos los lanzamientos
+GET /launches/latest → último lanzamiento
+GET /launches/upcoming → próximos lanzamientos
+GET /rockets → cohetes
+Sin registro, sin token
+
+
+9. Open Notify — ISS en tiempo real
+http://api.open-notify.org
+
+GET /iss-now.json → posición actual de la ISS
+GET /astros.json → astronautas en el espacio ahora mismo
+Sin registro, sin token
+Datos cambian en tiempo real
+
+
+ Geografía y Países
+10. REST Countries
+https://restcountries.com/v3.1
+
+GET /all → todos los países
+GET /name/colombia → buscar por nombre
+GET /region/americas → países de América
+GET /alpha/CO → por código
+Sin registro, sin token
+
+
+11. Open Meteo — Clima gratis
+https://api.open-meteo.com/v1/forecast
+
+GET /forecast?latitude=4.71&longitude=-74.07&current_weather=true
+Clima actual de cualquier ciudad por coordenadas
+Sin registro, sin token
+Practicar query params múltiples
+
+
+ Animales
+12. The Dog API
+https://api.thedogapi.com/v1
+
+GET /breeds → todas las razas
+GET /breeds/search?q=labrador → buscar raza
+GET /images/search → imagen aleatoria de perro
+Sin registro para básico, token para más funciones
+
+
+13. The Cat API
+https://api.thecatapi.com/v1
+
+GET /breeds → razas de gatos
+GET /images/search → imagen aleatoria
+Mismo esquema que Dog API
+Sin registro para básico
+
+
+14. PokeAPI pero para Dinosaurios
+https://dinoapi.netlify.app/dinosaurs
+
+GET /dinosaurs → todos los dinosaurios
+GET /dinosaurs/1 → uno específico
+Sin registro, sin token
+
+
+ Comida y Recetas
+15. TheMealDB — Recetas
+https://www.themealdb.com/api/json/v1/1
+
+GET /random.php → receta aleatoria
+GET /search.php?s=pasta → buscar por nombre
+GET /categories.php → categorías
+GET /filter.php?c=Seafood → por categoría
+Sin registro, sin token
+
+
+16. Open Food Facts
+https://world.openfoodfacts.org/api/v0
+
+GET /product/737628064502.json → producto por código de barras
+Datos reales de productos del supermercado
+Sin registro, sin token
+
+
+ Finanzas y Cripto
+17. CoinGecko — Criptomonedas
+https://api.coingecko.com/api/v3
+
+GET /simple/price?ids=bitcoin&vs_currencies=usd → precio Bitcoin
+GET /coins/list → todas las criptos
+GET /coins/bitcoin → detalle completo
+Sin registro, sin token
+
+
+18. ExchangeRate — Divisas
+https://open.er-api.com/v6/latest/USD
+
+GET /latest/USD → tasas de cambio desde dólar
+GET /latest/COP → desde peso colombiano
+Sin registro, sin token
+
+
+ Música
+19. iTunes Search
+https://itunes.apple.com/search
+
+GET /search?term=coldplay → buscar artista
+GET /search?term=thriller&media=music → canciones
+Sin registro, sin token
+Responde álbumes, canciones, precios
+
+
+ Superhéroes
+20. SuperHero API
+https://superheroapi.com/api
+
+GET /api/{token}/1 → superhéroe por ID
+GET /api/{token}/search/batman → buscar por nombre
+Registro gratuito con Facebook para token
+Practicar token en URL
+
+
+ Datos Aleatorios / Utilidades
+21. Random User — Usuarios falsos
+https://randomuser.me/api
+
+GET /api → usuario aleatorio completo
+GET /api?results=10 → 10 usuarios
+GET /api?nat=es → usuarios españoles
+Sin registro, sin token
+Perfecto para comparar con JSONPlaceholder
+
+
+22. Joke API — Chistes
+https://v2.jokeapi.dev/joke
+
+GET /joke/Any → chiste aleatorio
+GET /joke/Programming → chiste de programación
+GET /joke/Any?blacklistFlags=nsfw → filtrar contenido
+Sin registro, sin token
+
+
+23. Advice Slip — Consejos
+https://api.adviceslip.com/advice
+
+GET /advice → consejo aleatorio
+GET /advice/42 → consejo por ID
+Sin registro, sin token
+
+
+1. Elegir UNA API de la lista
+
+2. En Postman crear mínimo 5 requests:
+   - GET todos los recursos
+   - GET uno por ID o filtro
+   - Si tiene POST → crear uno
+   - Usar query params en al menos una request
+   - Escribir mínimo 2 tests automáticos
+
+3. Exportar la colección como .json
+
+4. Documento con capturas y responder:
+   → ¿Qué API elegiste y por qué?
+   → ¿Qué datos devuelve?
+   → ¿Usa token o no? ¿Qué tipo?
+   → ¿Qué código de estado recibiste en cada request?
+   → ¿Qué aprendiste diferente a JSONPlaceholder?
+
+Todo esto disponible en resumen en markdown en su repositorio GitHub para revisar
+
+--------------------------------------------------
+
+Finalmente con GraphQL con Postman
+
+API a usar: https://countries.trevorblades.com/graphql
+
+Requisitos mínimos:
+1. Crear una colección en Postman llamada "Tarea GraphQL - [Nombre]"
+2. Mínimo 5 requests con queries diferentes
+3. Al menos una query anidada (datos relacionados)
+4. Al menos una query con filtro por argumento
+5. Mínimo 2 tests automáticos por request
+
+Entregables:
+- Colección exportada como .json
+- Captura de pantalla de cada request con su respuesta
+- Documento respondiendo:
+   * ¿Qué diferencia encontraste vs REST?
+   * ¿Cuántos requests REST necesitarías para
+     reemplazar tu query más compleja?
+   * ¿En qué proyecto real usarías GraphQL?
