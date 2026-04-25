@@ -26,7 +26,7 @@ Además, se debe incluir información relacionada con autenticación, si esta ex
 
 #### Primera ejecución de la API
 
-Teniendo en cuenta la API que fue proveida por el profesor, se ejecuta en postman el primer request para ver el funcionamiento de este, $https://api.thedogapi.com/v1$
+Teniendo en cuenta la API que fue proveida por el profesor, se ejecuta en postman el primer request para ver el funcionamiento de este, https://api.thedogapi.com/v1
 ![Primera ejecución de la API](./media/1.testendpoint.png)
 Como se evidencia en la imagen previa, el endpoint es válido. Por tanto, es posible proseguir con la práctica. 
 
@@ -40,7 +40,7 @@ En un ambiente, se indica el base_url que será una variable en común. Más ade
 
 #### Obtención de una API key para requests.
 
-Cuando se intentó llamar al endpoint $https://api.thedogapi.com/v1/breeds$ con un método get, ocurrió el siguiente error
+Cuando se intentó llamar al endpoint https://api.thedogapi.com/v1/breeds con un método get, ocurrió el siguiente error
 
 ![Authentication required](./media/3.authrequired.png)
 
@@ -100,7 +100,7 @@ Como se logra ver, luego de la inclusión de la API key en el environment, es po
 
 #### Filtrado
 
-Ahora bien, no siempre es necesario en un api obtener toda la información, es por ello que se pueden desarrollar filtrados, en este caso, para filtrar por raza poodle se hace una solicitud get al endpoint: ${{baseurl}}/breeds/search?q=poodle$
+Ahora bien, no siempre es necesario en un api obtener toda la información, es por ello que se pueden desarrollar filtrados, en este caso, para filtrar por raza poodle se hace una solicitud get al endpoint: {{baseurl}}/breeds/search?q=poodle
 
 ![Filtrado por poodles](./media/9.poodle.png)
 
@@ -173,7 +173,7 @@ Para esta solicitud, el filtrado se devuelve como una lista de diccionarios (En 
 
 #### Obtención de imágenes aleatorias
 
-Otro de los servicios que nos ofrece la API es la obtención de imagenes aleatorias, para ello, se desarrolla un llamado al endpoint: ${{baseurl}}/images/search$. De manera que cada vez que se hace un nuevo llamado se genera una imagen aleatoria diferente. 
+Otro de los servicios que nos ofrece la API es la obtención de imagenes aleatorias, para ello, se desarrolla un llamado al endpoint: {{baseurl}}/images/search. De manera que cada vez que se hace un nuevo llamado se genera una imagen aleatoria diferente. 
 
 ![Imagen aleatoria de perro 1](./media/10.dograndomimage1.png)
 ![Imagen aleatoria de perro 2](./media/11.godrandomimage2.png)
@@ -193,17 +193,145 @@ El segundo test que se plantea, busca ver que la estructura del json sea valida,
 
 ![Desarrollo del segundo test](./media/13.test2.png)
 
+### Segunda parte del taller: GraphQL
 
-#### Resumen de la primera parte
+Para continuar, en esta sección del taller se pretende desarrollar una práctrica haciendo uso de graphql
+
+#### ¿Qué es GraphQL?
+
+GraphQL es un lenguaje de fuente abierta para manejo de querys que es ejecutado del lado del servidor. La principal ventaja que ofrece es eliminar el sobreacceso a datos que usualmente no son necesarios.
+Tiene un esquema fuertemente tipado que permite tener un solo endpoint para multiples fuentes de datos, mejorando el rendimiento de las APIS.
+
+#### GraphQL Retrospective
+
+Una función que se descubrió en el desarrollo de este taller fue la retrospectiva que permite ver como está construida, constituida y organizada la información a la que se puede acceder por medio de graphql, esto es una ayuda importante al permitir dar al programador la guía de cómo construir los querys de graphql.
+
+![Retrospección de graphql](./mediagraphql/1.retrospection.png)
 
 
-### Segunda parte del taller: GraphQL API
+#### Obtención de paises
 
-#### Resumen de la segunda parte
+Para el primer query de GraphQl se pretende obtener una lista de paises con su código, nombre y emoji. En realidad, al obtener el emoji no se obtiene la imagen como tal, sino una abreviación o un código que lo identifica.
 
+```graphql
+query {
+  countries {
+    code
+    name
+    emoji
+  }
+}
+```
+Se obtienen los resultados de la ejecución del query, tanto en json como en organización de tabla para poder verlos de forma más organizada. Notese, que de manera efectiva solo se obtienen los datos que son solicitados por medio de la query.
+![Tabla de los paises con la información solicitada](./mediagraphql/2.tablapaises.png)
+![Json de los paises con la información solicitada](./mediagraphql/3.jsonpaises.png)
 
+#### Query con filtrado
 
+Ahora bien, se pretende el desarollo de una solicitud que tenga un filtro, en este caso el filtro se va a desarrollar del código de país.
 
+```graphql
+query {
+  country(code: "CO") {
+    name
+    capital
+    currency
+  }
+}
+```
 
+![Obtención de país con código CO](./mediagraphql/4.filtradodepais.png)
 
+#### Obtención de continentes
 
+Otra de las consultas que se pretende desarrollar es la obtención de una lista de continentes, bastante sencilla, a continuación se muestra el query de obtención y los resultados en .json y ordenados en tabla
+
+```graphql
+query {
+  continents {
+    code
+    name
+  }
+}
+```
+
+![Lista de continentes en formato JSON](./mediagraphql/5.contienentesjson.png)
+![Lista de continentes en formato de tabla](./mediagraphql/6.continentestabla.png)
+
+#### Consultas anidadas
+
+Ahora bien, se plantea el desarrollo de consultas anidadas. Para la primera se plantea encontrar el nombre del pais y de la capital correspondiente de aquellos que corresponden al continente suramericano. 
+Por otro lado, para la segunda consulta, se pretende obtener una segmentación de los paises que hablan cada uno de los idiomas que existen registrados en la bdd. Losa resultados y las query se indican a continuación 
+
+```graphql
+query {
+  continent(code: "SA") {
+    name
+    countries {
+      name
+      capital
+    }
+  }
+}
+```
+![Resultados de consulta anidada tabla](./mediagraphql/7.anidadatabla.png)
+![Resultados de consulta anidada json](./mediagraphql/8.anidadajson.png)
+
+```graphql
+query {
+  languages {
+    name
+    code
+    countries {
+      name
+    }
+  }
+}
+```
+![Resultados de consulta anidada compleja json](./mediagraphql/9.anidadacomplejajson.png)
+![Resultados de consulta anidada conpleja tabla](./mediagraphql/10.anidadacomplejatabla.png)
+
+#### Escritura de test
+
+Ahora bien, es de vital importancia la escritura de test para validar el correcto funcionamiento de los request graphql, como ya se habia mencionado, estos son escritos en js. 
+
+![Primer test](./mediagraphql/11.test1.png)
+
+En el primer test que se escribió, se hace una validación muy sencilla, que verifica que el código de estado de la consulta graphql a la API se haya hecho de la manera correcta, es decir, retorna un código 200.
+
+![Segundo test](./mediagraphql/12.test2.png)
+
+En el segundo test, se verifica que la respuesta haya devuelto información, es decir, que no haya devuelto cero bytes.
+
+### Diferencias entre REST y GraphQL
+
+La principal diferencia entre REST y GraphQL radica en la forma en que se obtienen los datos.
+
+En REST, cada recurso tiene su propio endpoint, lo que puede generar múltiples solicitudes para obtener información relacionada. En cambio, GraphQL utiliza un único endpoint que permite solicitar exactamente los datos necesarios en una sola consulta.
+
+GraphQL evita el overfetching y underfetching, permitiendo mayor eficiencia en la transferencia de datos.
+
+### Comparación de número de requests
+
+Para la consulta:
+
+```graphql
+continent(code: "SA") {
+  name
+  countries {
+    name
+    capital
+  }
+}
+```
+
+En REST serían necesarios múltiples requests:
+1. Obtener el continente
+2. Obtener los países del continente
+3. Posiblemente obtener detalles adicionales de cada país
+
+Por lo tanto, se necesitarían entre 2 y 5 requests REST, mientras que en GraphQL se resuelve en uno solo.
+
+### GraphQL en proyectos reales
+
+GraphQL es realmente util cuando se quiere obtener datos de múltiples fuentes en una sola consulta, en lo personal, nunca habia usado esta herramienta y la encontraría especialmente util en el desarrollo de dashboards. 

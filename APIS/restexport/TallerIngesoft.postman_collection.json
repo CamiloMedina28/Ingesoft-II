@@ -1,0 +1,157 @@
+{
+  "info": {
+    "_postman_id": "fcbc6785-72f7-4ab2-905e-97b3dd7b374f",
+    "name": "TallerIngesoft",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52906855",
+    "_collection_link": "https://go.postman.co/collection/52906855-fcbc6785-72f7-4ab2-905e-97b3dd7b374f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "FirstTest",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Codigo HTTP 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.thedogapi.com/v1",
+          "protocol": "https",
+          "host": [
+            "api",
+            "thedogapi",
+            "com"
+          ],
+          "path": [
+            "v1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetBreeds",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"La respuesta no es vacia\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"La respuesta es congruente con estructura básica requerida.\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"id\");\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"name\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{apikey}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "x-api-key",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/breeds",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "breeds"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "poodle",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{apikey}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "x-api-key",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/breeds/search?q=poodle",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "breeds",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "poodle"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "randomimg",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/images/search",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "images",
+            "search"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
