@@ -195,6 +195,8 @@ El segundo test que se plantea, busca ver que la estructura del json sea valida,
 
 ### Segunda parte del taller: GraphQL
 
+[Colección de graphql en postman: ENLACE](https://medinacamilo2829-5949620.postman.co/workspace/camilo-medina's-Workspace~649a8555-d6ac-41be-8131-9ff9f5827469/collection/69ec20e9078f96bf9a8d93b1?action=share&source=copy-link&creator=52906855)
+
 Para continuar, en esta sección del taller se pretende desarrollar una práctrica haciendo uso de graphql
 
 #### ¿Qué es GraphQL?
