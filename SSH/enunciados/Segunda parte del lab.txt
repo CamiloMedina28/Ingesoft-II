@@ -1,0 +1,36 @@
+Segunda parte del lab
+
+
+Con el código fuente disponible en esta carpeta, ejercutar los comandos del 24 de abril y realizar lo siguiente:
+
+
+Tenes que validar los endpoints de put y delete como se realizo en clase, luego de esto generar una conexión por medio de SSH donde consumas esta información desde otro computador o teléfono (utilizar laboratorios de la nacional en caso de no tener)
+
+
+Se debe crear una tarea o manipular directamente el id
+
+	$tarea = Invoke-RestMethod -Method POST -Uri http://localhost:3000/tasks -ContentType "application/json" -Headers @{Authorization="Bearer $token"} -Body '{"title":"Tarea de prueba","description":"Para probar PUT y DELETE"}'
+
+
+	$tarea
+
+
+PUT
+
+	Invoke-RestMethod -Method PUT -Uri http://localhost:3000/tasks/$($tarea.id) -ContentType "application/json" -Headers @{Authorization="Bearer $token"} -Body '{"status":"completed"}'
+
+
+DELETE
+
+
+	Invoke-RestMethod -Method DELETE -Uri http://localhost:3000/tasks/$($tarea.id) -Headers @{Authorization="Bearer $token"}
+
+Los resultados deben ser documentados en un README o archivo md en GitHub, el cual será calificado a plazo máximo el 6 de mayo.
+
+Exitos. "Fica com deus"
+
+
+
+
+
+
