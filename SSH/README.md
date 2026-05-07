@@ -186,6 +186,22 @@ Cualquier persona que tenga un token válido puede suplantar la identidad de un 
 Base64 es codificación: solo transforma datos, cualquiera puede revertirlo.
 AES/RSA son cifrado: protegen datos usando claves; sin la clave correcta no deberían poder leerse.
 
-### Propuestas de mejora y retroalimentación
+### Conexión por medio de SSH
 
-- Login del lado del servidor.
+Para la practica por medio de SSH se pretende crear una instancia de windows subsystem for linux (WSL), de esta manera se tiene una distro de ubuntu corriendo en windows para el desarrollo de las solicitudes por secure sheel (ssh).
+
+![Conexión inicial de wsl con el server de Node](./media/11wslconectiontest.png)
+
+Como se ve en la anterior imagen, se ingresa a WSL por medio de la terminal powershell y se comprueba que está activa la conexión.
+
+![Inicio de sesión](./media/12wsllogin.png)
+
+La imagen previa muestra el proceso de inicio de sesióny el guardado del token en una variable, esto con el fin de poder usarlo en futuras solicitudes.
+
+![Creación de una tarea](./media/13creaciontarea.png)
+
+El siguiente paso es la creación de una taream, la cual después va a ser actualizada y eliminada.
+Las dos imagenes a continuación muetran el proceso de actualización y eliminación. Además, se muestra el resultado del proceso al listar las tareas
+
+![Actualización de las tareas](./media/14.update.png)
+![Eliminación de las tareas](./media/15.delete.png)

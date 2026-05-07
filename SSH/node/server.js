@@ -236,7 +236,7 @@ const server = http.createServer(async (req, res) => {
   send(res, 404, { error: 'Ruta no encontrada' });
 });
 
-server.listen(3000, () => {
+server.listen(3000, '0.0.0.0',() => {
   console.log('Servidor corriendo en http://localhost:3000');
   console.log('Endpoints disponibles:');
   console.log('  POST /auth/register');
