@@ -22,11 +22,14 @@ public class LoggerSingleton implements LoggerInterface{
 
     @Override
     public void log(String message){
-
+        logs.add(message);
     }
     
     @Override
     public void showLogs(){
-
+        System.out.println("--------LOGS--------");
+        for (String log : logs) {
+            System.out.println(log);
+        }
     }
 }
