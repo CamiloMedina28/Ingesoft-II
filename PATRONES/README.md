@@ -106,11 +106,83 @@ Ahora bien, ¿Cómo se ve la clase luego de aplicar el patrón de diseño?
 Como se ve en el hipervinculo indicado acá arriba. El constructor recibe una instancia de builder.
 Se declaran todos los atributos de Factura como atributos privados y se indica en el constructor que estos dependen de builder.
 Ahora bien, la clase Builder es una clase que está dentro de la misma clase Factura, esto no es estrictamente necesario, pero suele desarrollarse así porque el builder solo pertenece a esa clase.
+El builder tiene una colección tan grande de setters como de atributos de la clase base.
 
-el builder tiene una colección tan grande de setters como de atributos de la clase base.
 
+### Combinación del patrón singleton con el patrón observer
 
-### Combinación del patrón singleton con el patrón
+#### Patrón observer 
+
+El patron observador permite que un objeto notifique de manera automática a otros objetos cuando ocurre un cambio en su estado.
+En términos generales funciona como un servicio de suscripción. Por ejemplo, a un boletin de noticias o a un periodico, de forma que de manera automática el usuario recibe las actualizaciones de los cambios que se han generado o cuando se emite un nuevo boletín.
+
+Esto nos permite afirmar que los patrones de comportamiento no solo describen estructuras de relaciones entre clases, sino que también establecen mecanismo de comunicación entre cad auna de las clases.
+
+Uno de los principales usos de este patrón es en el desarrollo de interfaces gráficas, que permiten una interfaz (intermediario de comunicación) entre el usuario y las funcionalidades de software que se han planteado. 
+
+**Ejemplo de aplicación del patrón observer**
+
+Para el ejemplo de aplicación se pretende la creación de un sistema de notificación de pedidos, algo similar a lo que se estableció previemente. 
+Como primera medida, se establece la estructura común de cada uno de los notificadores, esto por medio de una interfaz.
+
+[Interfaz del observador implementada en el lenguaje JAVA](./observer/ObserverInterface.java)
+```java
+public interface ObserverInterface {
+    void update(String order);
+}
+```
+
+Se procede a la generación de cada uno de los notificadores, para este ejemplo se van a tener tres notificadores: 
+- [Email:](./observer/EmailService.java)
+- [SMS](./observer/SMSService.java)
+- [Análitica](./observer/AnalyticsService.java)
+
+Solo se va a mostrar la funcionalidad esperada, no se va a implementar un módulo completo de envío de correos por SMTP, pues se sale de los objetivos de la práctica.
+Como es de esperar cada una de estas clases está mediada por la interfaz que se mostró previamente.
+
+Por otro lado, se crea la interfaz que media la gestión de los suscriptores
+[Interfaz SubjectInterface](./observer/SubjectInterface.java)
+```java
+public interface SubjectInterface {
+    void addObserver(ObserverInterface observer);
+
+    void removeObserver(ObserverInterface observer);
+
+    void notifyObservers();
+}
+```
+Como se puede ver, se generan lkos métodos necesarios para añadir suscriptores, eliminar suscriptores y el método de notificación a todos los suscripotores que estén inscritos. COn la estructura básica que se da en la interfaz, se implementa cada uno de los métodos en la [Clase OrderManager](./observer/OrderManager.java).
+
+Dentro de esta clase se crea un arraylist que permite guardar los suscriptores y se implementan cada uno de los métodos descritos por la interfaz mostrada.
+El método notifyObservers funciona por medio de un foreach.
+
+Ahora, la clase principal:
+```java
+public class Main {
+    public static void main(String[] args){
+        OrderManager gestor = new OrderManager();
+
+        ObserverInterface emailService = new EmailService();
+        ObserverInterface smsservice = new SMSService();
+        ObserverInterface analyticsservice = new AnalyticsService();
+
+        gestor.addObserver(emailService);
+        gestor.addObserver(smsservice);
+        gestor.addObserver(analyticsservice);
+
+        gestor.createOrder("Pedido #1");
+        gestor.createOrder("Pedido #2");
+
+    }
+}
+```
+
+Crea una instancia del gestor de ordenes, instancia los servicios de notificación y los agrega al gestor. Finalmente, se crean dos ordenes de prueba en el gestor para ver su funcionamiento. A continuación, se muestra el resultado obtenido de implementar este ejemplo del patrón de diseño observer.
+
+![Salida del ejemplo de patrón observer](./media/Observer.png)
+
+#### Implementación de observer y singleton
+
 
 ### Uso de patrón creacional, estructural y de comportamiento
 
@@ -122,3 +194,7 @@ el builder tiene una colección tan grande de setters como de atributos de la cl
 - https://www.ionos.com/es-us/digitalguide/paginas-web/desarrollo-web/patron-de-diseno-builder/
 - https://devexpert.io/blog/builder-patrones-diseno
 - https://refactoring.guru/es/design-patterns/builder
+- https://reactiveprogramming.io/blog/es/patrones-de-diseno/observer
+- https://www.linkedin.com/advice/0/what-benefits-drawbacks-using-observer-pattern?lang=es
+- https://refactoring.guru/es/design-patterns/observer
+- https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o)
