@@ -183,6 +183,28 @@ Crea una instancia del gestor de ordenes, instancia los servicios de notificaci�
 
 #### Implementación de observer y singleton
 
+Previamente ya se ha mostrado el funcionamiento del patrón observer y el patrón singleton de forma general. 
+
+Resumiendo, el patron singleton, busca la creación de una clase que solo pueda ser instanciada una vez. 
+Por otro lado, el patrón observer pretende crear un sistema de notificaciones entre clases, estableciendo canales de comunicación. 
+
+Para mostrar el funcionamiento conjunto, se pretende fusionar el ejemplo mostrado anteriormente convirtiendo la clase gestora de notificaciones en un singleton. De manera que solo pueda existir un notificador en todo el flujo de ejecución.
+
+**Implementación de observer con singleton en JAVA**
+
+Como primera medida, la interfaz del observador se cambió con el fin de generalizarla, esta recibe ahora un mensaje como argumento, ya no una orden.
+
+```java
+private NotificationManager() {}
+     public static NotificationManager getInstance() {
+        if (instance == null) {
+            instance = new NotificationManager();
+        }
+        return instance;
+    }
+```
+
+
 
 ### Uso de patrón creacional, estructural y de comportamiento
 
