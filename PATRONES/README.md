@@ -151,7 +151,7 @@ public interface SubjectInterface {
     void notifyObservers();
 }
 ```
-Como se puede ver, se generan lkos métodos necesarios para añadir suscriptores, eliminar suscriptores y el método de notificación a todos los suscripotores que estén inscritos. COn la estructura básica que se da en la interfaz, se implementa cada uno de los métodos en la [Clase OrderManager](./observer/OrderManager.java).
+Como se puede ver, se generan los métodos necesarios para añadir suscriptores, eliminar suscriptores y el método de notificación a todos los suscripotores que estén inscritos. Con la estructura básica que se da en la interfaz, se implementa cada uno de los métodos en la [Clase OrderManager](./observer/OrderManager.java).
 
 Dentro de esta clase se crea un arraylist que permite guardar los suscriptores y se implementan cada uno de los métodos descritos por la interfaz mostrada.
 El método notifyObservers funciona por medio de un foreach.
@@ -192,7 +192,7 @@ Para mostrar el funcionamiento conjunto, se pretende fusionar el ejemplo mostrad
 
 **Implementación de observer con singleton en JAVA**
 
-Como primera medida, la interfaz del observador se cambió con el fin de generalizarla, esta recibe ahora un mensaje como argumento, ya no una orden.
+Como primera y única medida, la interfaz del observador se cambió con el fin de generalizarla, esta recibe ahora un mensaje como argumento, ya no una orden.
 
 ```java
 private NotificationManager() {}
@@ -204,10 +204,106 @@ private NotificationManager() {}
     }
 ```
 
-
+En el bloque de código previo se evidencia como se transforma el patrón de diseño para tener un singleton, al permitir una sola instancia de la clase `NotificationManager`.
 
 ### Uso de patrón creacional, estructural y de comportamiento
 
+En esta sección se pretende desarrollar una incorporación de los tres tipos de patrones que hay disponibles. Previamente, ya se han explicado patrones de tipo creacional y de comportamiento. Por tanto, es correspondiente el desarrollo de un patrón estructural.
+
+#### Patrón Facade
+
+El objetivo principal en este patrón es la definición de una "fachada" que sirva de entrada a métodos más complejos de clases.
+
+En muchas ocasiones, una operación dentro de un sistema requiere la interacción de múltiples componentes. Por ejemplo, al realizar una compra en una plataforma de comercio electrónico puede ser necesario validar el inventario, generar una factura, registrar la transacción y enviar notificaciones al usuario. Si el cliente tuviera que interactuar directamente con cada uno de estos componentes, el código resultaría altamente acoplado y difícil de mantener.
+
+El patrón Facade resuelve este problema mediante la creación de una clase intermediaria que encapsula la lógica de coordinación entre los diferentes subsistemas. De esta manera, el cliente únicamente interactúa con la fachada, mientras que esta se encarga de realizar todas las operaciones necesarias internamente.
+
+Como ejemplo general, vamos a ver esta implementación sencilla que se desarrolla en spring boot. 
+
+```java
+@Controller
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final AuthService register = new AuthService();
+
+    @PostMapping("/register")
+    public ResponseEntity<> register(@RequestBody Request request){
+        RegisterUserResponse response = register.RegisterUser(request);
+
+    }
+}
+```
+
+En el bloque de código mostrado anteriormente, se identifica un controlador de spring boot basado en una api rest. 
+El endpoint `/register` solo llama un método (que será el servicio) el cual desarrollará todo el proceso de registro de usuario. A continuación, no se mostrará el servicio implementado, sino que se mostrará la interfaz que sirve como plantilla para este.
+
+```java
+public interface AuthServiceInterface {
+    public RegisterUserResponse RegisterUser(RegisterUserRequest request);
+
+    public boolean UserExistsByCedula(int cedula);
+
+    public boolean UserExistsByemail(String email);
+
+    public void SendEmailToValidateUser(String email);
+
+    public boolean UserApproved();
+}
+
+```
+
+Estos son algunos métodos generales que se podrian implementar como el servicio de registro de usuarios. 
+
+- Registro de usuarios, este es el método "fachada" al que se llama desde el controlador.
+- Verificación si el usuario ya está registrado con la cédula proporcionada.
+- Verificación si el usuario ya está registrado con el correo electrónico proporcionado.
+- Enviar un email para verificar que la persona tiene la voluntad de registrarse en el sistema. 
+- Verificar si el usuario si ha validado su inscripción en el sistema.
+
+#### Mezcla de los patrones
+
+Con el objetivo de demostrar la integración de diferentes categorías de patrones de diseño, se desarrolló un sistema simplificado de gestión de pedidos en el cual participan patrones creacionales, estructurales y de comportamiento. La implementación permite observar cómo estos patrones pueden colaborar para resolver problemas de diseño comunes dentro de una misma aplicación.
+
+El escenario planteado consiste en la creación de un pedido dentro de un sistema. Aunque desde la perspectiva del usuario esta acción parece sencilla, internamente se requiere la interacción de varios componentes encargados de construir la factura, registrar eventos del sistema y notificar a diferentes servicios sobre la creación del pedido.
+
+El cliente, al desarrollar un pedido, hace un llamado a un facade que va a gestioinar todo el proceso, siendo este. 
+- Creación de factura
+- Creación de log
+- Envío de notificación
+- Impresión de mensaje completado. 
+
+La creación de la factura se hace por medio de un patron builder, por tanto, el llamado a la creación tiene la siguiente estructura.
+
+```java
+Factura factura = new Factura.Builder()
+                .numero(1)
+                .cliente(clientName)
+                .metodoPago("Tarjeta")
+                .build();
+
+```
+
+Por otro lado, la clase de generación de logs, es la que tiene implementado el singleton. Es decir, solo se permite crear una clase para la gestión de estos. 
+```java
+public static synchronized LoggerSingleton getInstance() {
+
+        if (instance == null) {
+            instance = new LoggerSingleton();
+        }
+
+        return instance;
+    }
+```
+
+Finalmente, al crear una orden, la salida sería algo como: 
+
+```java
+facade.createOrder(
+    "Pedido #1001",
+    "Camilo Medina");
+```
+![Salida de la implementación de los tres patrones](./media/facadesingletonbuilder.png)
 
 ### Referencias
 - https://refactoring.guru/es/design-patterns/singleton
@@ -220,3 +316,4 @@ private NotificationManager() {}
 - https://www.linkedin.com/advice/0/what-benefits-drawbacks-using-observer-pattern?lang=es
 - https://refactoring.guru/es/design-patterns/observer
 - https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o)
+- https://refactoring.guru/es/design-patterns/facade

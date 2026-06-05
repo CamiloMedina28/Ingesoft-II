@@ -5,7 +5,7 @@ import com.ecommerce.technicaltest.dto.request.RegisterUserRequest;
 import com.ecommerce.technicaltest.dto.response.ApiResponse;
 import com.ecommerce.technicaltest.dto.response.LoginResponse;
 import com.ecommerce.technicaltest.dto.response.RegisterUserResponse;
-import com.ecommerce.technicaltest.service.AuthService;
+import com.ecommerce.technicaltest.service.imp.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
