@@ -16,11 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthService register = new AuthService();
+    private final AuthService authService;
+
+    public AuthController(
+            AuthService authService
+    ) {
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<RegisterUserResponse>> register(@RequestBody RegisterUserRequest request){
-        RegisterUserResponse response = register.RegisterUser(request);
+        RegisterUserResponse response = authService.RegisterUser(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ApiResponse<>(
@@ -33,7 +39,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> LogIn(@RequestBody LoginRequest request){
-        LoginResponse response = register.AuthenticateUser(request);
+        LoginResponse response = authService.AuthenticateUser(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ApiResponse<>(

@@ -10,26 +10,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService implements AuthServiceInterface {
+
+    private final UserDAOImp userdao;
+
+    public AuthService(UserDAOImp userDAO) {
+        this.userdao = userDAO;
+
+    }
+
     @Override
     public RegisterUserResponse RegisterUser(RegisterUserRequest request){
 
         RegisterUserResponse response = new RegisterUserResponse();
 
-        try{
-            int cedula = request.getCedula();
-            String email = request.getEmail();
-            String nombre = request.getNombre();
-            String password = request.getPassword();
-            String direccion = request.getDireccion();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        try{
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
 
