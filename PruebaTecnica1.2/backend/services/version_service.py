@@ -18,12 +18,14 @@ class VersionService:
             )
             response.raise_for_status()
             data = response.json()
-            print(data)
             local_version = settings.APP_VERSION
 
             result = VersionService.evaluate_version(local_version, data)
-            print(result)
-            return result
+            return {
+                "message": result,
+                "localVersion": local_version,
+                "remoteVersion": data
+            }
         except requests.exceptions.Timeout:
             raise Exception(
                 "Timeout al consultar servicio de versiones"
